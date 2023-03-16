@@ -31,7 +31,14 @@ function checkAmin(){
     }
     guzik()
 }
+function checkuser(){
 
+    const admin = localStorage.getItem("login")
+    if(admin !=="user"  ){
+        window.location.href = "login.html"
+    }
+    guzik()
+}
 function guzik(){
     const admin = localStorage.getItem("login")
     if(admin == "admin"){
