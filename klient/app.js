@@ -1,54 +1,28 @@
-async function klik(){
+async function getUser(){
     const login = document.getElementById("login").value
     const haslo = document.getElementById("haslo").value
 
-    const data = await fetch(`http://localhost:3000/login`)
+    const data = await fetch(`http://localhost:3000/login/${login}/${haslo}`)
     const json = await data.json()
+    console.log(json)
 
-    if(json[0].login == login && json[0].adminpass == haslo){
-        console.log("Zalogowano")
-        localStorage.setItem('login', 'admin')
-        window.location.href = "admin.html"
-        guzik()
-    }
-    else if(json[1].login == login && json[1].adminpass == haslo){
-        console.log("Zalogowano")
-        localStorage.setItem('login', 'user')
-        window.location.href = "user.html"
-        guzik()
+    if(json.user != undefined){
+
+        localStorage.setItem("upr", JSON.stringify(json))
     }
     else{
-        console.log("Błędny login lub haslo")
-        alert("Błędny login lub haslo")
-        localStorage.setItem('login', 'false')
+        localStorage.setItem("upr","false")
     }
 }
-function checkAmin(){
+function checkUser(){
+    const user = JSON.parse(localStorage.getItem("upr"))
 
-    const admin = localStorage.getItem("login")
-    if(admin !=="admin"  ){
-        window.location.href = "login.html"
-    }
-    guzik()
-}
-function checkuser(){
+    const url = window.location.href
 
-    const admin = localStorage.getItem("login")
-    if(admin !=="user"  ){
-        window.location.href = "login.html"
+    if(user.upr != "admin" && url.includes("admin.html")){
+        window.location.href = "index.html"
     }
-    guzik()
-}
-function guzik(){
-    const admin = localStorage.getItem("login")
-    if(admin == "admin"){
-        const wyloguj = document.createElement("button")
-        wyloguj.innerHTML = "Wyloguj"
-        wyloguj.setAttribute("onclick", "wylog()")
-    document.getElementById("wyloguj").appendChild(wyloguj)
+    else if(user.upr != "user" && url.includes("user.html")){
+        window.location.href = "index.html"
     }
-}
-function wylog(){
-    localStorage.setItem('login', 'false')
-    window.location.href = "login.html"
-}
+ }

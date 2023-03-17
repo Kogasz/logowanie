@@ -4,10 +4,28 @@ const port =  3000
 const app = express()
 app.use(cors())
 
-var login = [{login:"admin", adminpass:"admin"},{login:"user", adminpass:"user"}]
+const users = [
 
-app.get("/login", function(req,res){
+    {user: "admin", pass: "admin", upr: "admin"},
+    {user: "user", pass: "user", upr: "user"},
+    {user: "Jan", pass: "Kowalski", upr: "user"}
 
-res.json(login)    
+
+
+
+]
+
+app.get("/login/:user/:pass", function(req,res){
+const user = req.params.user
+const pass = req.params.pass
+    
+for(let i=0;i<=users.length-1;i++){
+    if(users[i].user == user && users[i].pass == pass){
+        res.json({user: user,upr: users[i].upr})
+    }
+}
+res.json({staus: "Niezalogowany"})
 })
-app.listen(port)
+app.listen(port, ()=>{
+    console.log(`Aplikacja dziala: ${port}`)
+})
